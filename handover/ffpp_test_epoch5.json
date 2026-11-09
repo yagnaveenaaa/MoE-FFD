@@ -1,0 +1,9 @@
+﻿{
+  "checkpoint": "models_params_4.tar",
+  "sha256": "49432ca97fe6a07d72c9f02afcf1aa3bac8b386f91c6302ea152711ac399d6ad",
+  "dataset": "FFPP",
+  "videos": 700,
+  "frames_per_video": 20,
+  "video": {"accuracy": 0.95, "auc": 0.9852423469387755, "eer": 0.04107142857142862},
+  "frame": {"accuracy": 0.9027857142857143, "auc": 0.9639869579081634, "eer": 0.0938392857142488}
+}
