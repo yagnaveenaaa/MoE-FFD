@@ -24,6 +24,7 @@ Hacked together by / Copyright 2020, Ross Wightman
 """
 
 import math
+import os
 import logging
 from functools import partial
 from collections import OrderedDict
@@ -334,8 +335,11 @@ class Adapter_MoElayer(nn.Module):
         # define adapter param
         self.num_experts = len(adapter_experts)
         self.adapter_experts = adapter_experts
-        self.w_gate = nn.Parameter(torch.zeros(dim,  self.num_experts), requires_grad=True)
-        self.w_noise = nn.Parameter(torch.zeros(dim,  self.num_experts), requires_grad=True)
+        self.gate_in = os.environ.get("GATE_IN", "mean")   # "mean" = baseline, "cls_avg" = proposed
+        assert self.gate_in in ("mean", "cls_avg")
+        gate_dim = 2 * dim if self.gate_in == "cls_avg" else dim
+        self.w_gate = nn.Parameter(torch.zeros(gate_dim, self.num_experts), requires_grad=True)
+        self.w_noise = nn.Parameter(torch.zeros(gate_dim, self.num_experts), requires_grad=True)
         self.register_buffer("mean", torch.tensor([0.0]))
         self.register_buffer("std", torch.tensor([1.0]))
 
@@ -448,9 +452,13 @@ class Adapter_MoElayer(nn.Module):
         encourages all experts to be approximately equally used across a batch.
         """
         B, N, _ = x.shape
-        x_global = torch.mean(x,dim=1,keepdim=False)
+        if self.gate_in == "cls_avg":
+            x_global = torch.cat([x[:, 0], x[:, 1:].mean(dim=1)], dim=1)   # [B, 2*dim]
+        else:
+            x_global = torch.mean(x, dim=1, keepdim=False)                 # baseline, unchanged
 
         gates, load = self.noisy_top_k_gating(x_global, self.training)
+        self.last_gates = gates.detach()   # only used by routing_stats.py
 
         # calculate importance loss
         importance = gates.sum(0)
@@ -746,7 +754,7 @@ default_cfgs = {
         num_classes=21843),
     'vit_huge_patch14_224_in21k': _cfg(
         url='https://storage.googleapis.com/vit_models/imagenet21k/ViT-H_14.npz',
-        hf_hub='timm/vit_huge_patch14_224_in21k',
+        hf_hub_id='timm/vit_huge_patch14_224_in21k',
         num_classes=21843),
 
     # SAM trained models (https://arxiv.org/abs/2106.01548)
@@ -1206,12 +1214,12 @@ def _create_vision_transformer(variant, pretrained=False, default_cfg=None, **kw
         _logger.warning("Removing representation layer for fine-tuning.")
         repr_size = None
 
+    cfg = dict(default_cfg); cfg['custom_load'] = 'npz' in cfg.get('url', '')
     model = build_model_with_cfg(
         VisionTransformer, variant, pretrained,
-        default_cfg=default_cfg,
+        pretrained_cfg=cfg,
         representation_size=repr_size,
         pretrained_filter_fn=checkpoint_filter_fn,
-        pretrained_custom_load='npz' in default_cfg['url'],
         **kwargs)
     return model
 
