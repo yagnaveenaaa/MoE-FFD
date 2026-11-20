@@ -1,20 +1,19 @@
-<<<<<<< HEAD
+
 *.tar
-__pycache__/
-=======
-﻿*.tar
 *.pt
 *.pth
 *.ckpt
 *.pkl
 *.zip
 *.7z
-data/
-models/
-checkpoints/
+
 __pycache__/
 .ipynb_checkpoints/
 .env
+
+data/
+models/
+checkpoints/
 
 # Smoke-test datasets and extracted frames
 smoke_data_raw/
@@ -25,11 +24,10 @@ smoke_test/checkpoints/
 # Local experiment archives containing model weights
 smoke_test/archive/
 
-# Smoke-test data (keep locally; do not upload large datasets)
+# Smoke-test data
 smoke_test/data/
 smoke_test/frames/
 
 # Local Celeb-DF smoke-test data
 smoke_test/testingdataset/videos/
 smoke_test/testingdataset/frames/
->>>>>>> 99312b0d552d8087854d75b024fcf40562f99bf7
