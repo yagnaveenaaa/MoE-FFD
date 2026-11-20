@@ -155,8 +155,6 @@ The script requires both model checkpoints in checkpoints/.
 
 Datasets, extracted frames, and model checkpoints are retained locally.
 
-Large datasets and model weights are excluded from GitHub. Evaluation CSVs, analysis scripts, and this README can be version-controlled.
 
----
 
-Status: Smoke-test evaluation and threshold analysis completed.
+
