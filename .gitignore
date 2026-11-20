@@ -24,3 +24,7 @@ smoke_test/archive/
 # Smoke-test data (keep locally; do not upload large datasets)
 smoke_test/data/
 smoke_test/frames/
+
+# Local Celeb-DF smoke-test data
+smoke_test/testingdataset/videos/
+smoke_test/testingdataset/frames/
