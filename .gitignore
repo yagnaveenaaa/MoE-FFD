@@ -11,3 +11,16 @@ checkpoints/
 __pycache__/
 .ipynb_checkpoints/
 .env
+
+# Smoke-test datasets and extracted frames
+smoke_data_raw/
+smoke_frames/
+smoke_test/dataset/
+smoke_test/checkpoints/
+
+# Local experiment archives containing model weights
+smoke_test/archive/
+
+# Smoke-test data (keep locally; do not upload large datasets)
+smoke_test/data/
+smoke_test/frames/
