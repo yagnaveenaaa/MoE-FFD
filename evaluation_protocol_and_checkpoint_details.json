@@ -1,0 +1,27 @@
+{
+  "evaluation": "20-video Celeb-DF sample; not full-test performance",
+  "threshold": 0.5,
+  "positive_class": "fake (1); real (0)",
+  "aggregation": "mean of five frame fake probabilities",
+  "preprocessing": "existing face crops; RGB; repository base_transform: 224x224, mean/std 0.5",
+  "timing": "CPU, four threads; forward plus softmax; warm-up, I/O and face detection excluded; one timed run",
+  "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+  "torch": "2.15.0+cpu",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "models": {
+    "baseline": {
+      "checkpoint": "models_params_4.tar",
+      "sha256": "49432ca97fe6a07d72c9f02afcf1aa3bac8b386f91c6302ea152711ac399d6ad",
+      "strict_loading": true,
+      "total_parameters": 101290946,
+      "checkpoint_bytes": 530090321
+    },
+    "new": {
+      "checkpoint": "models_params_4.3.tar",
+      "sha256": "2810239d31e355be916c1b10170ceb20535a0fbcfe4f2cf8038189639e01d4ae",
+      "strict_loading": true,
+      "total_parameters": 101290946,
+      "checkpoint_bytes": 530072801
+    }
+  }
+}
